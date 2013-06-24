@@ -2,7 +2,8 @@
 	//here we go
 	
 	function grab_data_from_url($json_url) {
-		 
+//		var_dump($json_url);
+
 		//$username = 'your_username';  // authentication
 		//$password = 'your_password';  // authentication
 		
@@ -81,8 +82,8 @@
 	}
 	
 	//config
-	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
-//	$mainurl = 'http://tf-insights.localhost/api/v1/';
+//	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
+	$mainurl = 'http://tf-insights.localhost/api/v1/';
 	
 	//all time stats
 	// get all the entries info
@@ -95,7 +96,7 @@
 	$total_authors_sales = mysum($authors,'level','','sales');
 	
 	$totals = grab_data_from_url($mainurl.'items?totals');
-	// var_dump($totals);
+//	 var_dump($totals);
 	
 	//grab items by price
 	$totals_35 = grab_data_from_url($mainurl.'items?totals&cost=35');
@@ -116,8 +117,19 @@
 	$total_themes_30days = count($themes_accepted_30days);
 	$total_income_30days = myincome($themes_accepted_30days,'category_name','');
 	
-	//var_dump($themes_accepted_30days);
+	if (date('N', time()) == 1) { //today is monday so no data yet
+		$senna_thisweek = null;
+	} else {
+		$senna_thisweek = grab_data_from_url($mainurl.'items?itemid=4609270');
+		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Monday this week"));
+		$senna_thisweek['sales'] -= $tempstats['sales'];
+		unset($tempstats);
+	}
 	
+	$senna_lastweek = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Sunday last week"));
+	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Monday last week"));
+	$senna_lastweek['sales'] -= $tempstats['sales'];
+	unset($tempstats);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -268,7 +280,7 @@ body {
           <p>The <strong>day of the week </strong>with <strong>most accepted themes.</strong></p>
         </div>
   </div>
-      <h2 class="well">Last 30 Days Stats <small>(May 15th - June 15th)</small></h2>
+      <h2 class="well">Last 30 Days Stats <small>(<?php echo date('F dS', strtotime("-1 month")); ?> - <?php echo date('F dS'); ?>)</small></h2>
 
       <div class="row-fluid">
     <div class="span4">
@@ -294,19 +306,19 @@ body {
           <h2>New Theme Sales</h2>
 		<strong>Creative</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','creative','sales') / $total_themes_30days),2) ?></span> Sales per Theme (average)</small>
 		<div class="progress">
-		  <div class="bar bar-warning" style="width: <?php echo round($total_sales_30days / mysum($themes_accepted_30days,'category_slug','creative','sales')*100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','creative','sales') ?> <span class="muted1"></span></div>
+		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','creative','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','creative','sales') ?> <span class="muted1"></span></div>
 		</div>
         <strong>Corporate</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','corporate','sales') / $total_themes_30days),2) ?></span></small>
 		<div class="progress">
-		  <div class="bar bar-warning" style="width: <?php echo round($total_sales_30days / mysum($themes_accepted_30days,'category_slug','corporate','sales')*100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','corporate','sales') ?> <span class="muted1"></span></div>
+		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','corporate','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','corporate','sales') ?> <span class="muted1"></span></div>
 		</div>
 		<strong>Blog / Magazine</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') / $total_themes_30days),2) ?></span></small>
 		<div class="progress">
-		  <div class="bar bar-warning" style="width: <?php echo round($total_sales_30days / mysum($themes_accepted_30days,'category_slug','blog-magazine','sales')*100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') ?> <span class="muted1"></span></div>
+		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') ?> <span class="muted1"></span></div>
 		</div>
 		<strong>eCommerce</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','ecommerce','sales') / $total_themes_30days),2) ?></span></small>
 		<div class="progress">
-		  <div class="bar bar-warning" style="width: <?php echo round($total_sales_30days / mysum($themes_accepted_30days,'category_slug','ecommerce','sales')*100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','ecommerce','sales') ?> <span class="muted1"></span></div>
+		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','ecommerce','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','ecommerce','sales') ?> <span class="muted1"></span></div>
 		</div>
         </div>
     <div class="span4">
@@ -377,6 +389,25 @@ body {
 		</div>
           
         </div>
+  </div>
+   <hr>
+  <div class="row-fluid">
+   	<div class="span4">
+		<h3>Senna Sales - This week</h3>
+		<?php if (!empty($senna_thisweek)): ?>
+		<p><strong><?php echo $senna_thisweek['sales'] ?></strong> times sold </p>
+		<?php else: ?>
+		<p> No data yet. Wait a day!</p>
+		<?php endif; ?>
+    </div>
+	<div class="span4">
+		<h3>Senna Sales - Last week</h3>
+		<?php if (!empty($senna_lastweek)): ?>
+		<p><strong><?php echo $senna_lastweek['sales'] ?></strong> times sold </p>
+		<?php else: ?>
+		<p> No data. Bummer!</p>
+		<?php endif; ?>
+    </div>
   </div>
  <hr>
   <div class="row-fluid">
