@@ -82,8 +82,8 @@
 	}
 	
 	//config
-//	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
-	$mainurl = 'http://tf-insights.localhost/api/v1/';
+	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
+//	$mainurl = 'http://tf-insights.localhost/api/v1/';
 	
 	//all time stats
 	// get all the entries info
