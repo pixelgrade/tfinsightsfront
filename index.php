@@ -119,8 +119,16 @@
 	
 	//get all authors
 	$authors_1monthago = grab_data_from_url($mainurl.'authors?all&date='.strtotime("-1 month"));
-	$total_1monthago_authors = count($authors_1monthago);
-	$total_lastmonth_authors_sales = mysum($authors,'level','','sales') - mysum($authors_1monthago,'level','','sales');
+	$authors_now = $authors;
+	foreach ($authors_1monthago as $key => $item) {
+		if ($authors_now[$key]['sales'] == $item['sales']) {
+			unset($authors_now[$key]);
+			unset($authors_1monthago[$key]);
+		}
+	}
+	$total_authors_now = count($authors_now);
+	$total_authors_1monthago = count($authors_1monthago);
+	$total_authors_sales_lastmonth = mysum($authors_now,'level','','sales') - mysum($authors_1monthago,'level','','sales');
 	
 	if (date('N', time()) == 1) { //today is monday so no data yet
 		$senna_thisweek = null;
@@ -395,35 +403,51 @@ body {
         </div>
   </div>
    <hr>
+  <div span="8"><span>Only authors that have had at least a sale in the last 30 days</span></div>
   <div class="row-fluid">
 	<div class="span4">
+	<h2>Authors Number</h2>
+		<strong>Power Elite Authors </strong>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo round(mycount($authors_now,'level','Power Elite', true) / $total_authors_now * 100) ?>%;"><?php echo mycount($authors_now,'level','Power Elite', true) ?></div>
+		</div>
+		<strong>Elite Authors </strong>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo round(mycount($authors_now,'level','Elite', true) / $total_authors_now * 100) ?>%;"><?php echo mycount($authors_now,'level','Elite', true) ?></div>
+		</div>
+		<strong>Regular Authors</strong>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo round(mycount($authors_now,'level','Regular', true) / $total_authors_now * 100) ?>%;"><?php echo mycount($authors_now,'level','Regular', true) ?></div>
+		</div>
+	</div>
+	<div class="span4">
 		<h2>Authors Sales</h2>
-		<strong>Power Elite Authors </strong><small> <span class="label"><?php echo round((mysum($authors,'level','Power Elite', 'sales', true) - mysum($authors_1monthago,'level','Power Elite', 'sales', true)) / mycount($authors,'level','Power Elite', true)) ?></span>  Sales per Author (average)</small>
+		<strong>Power Elite Authors </strong><small> <span class="label"><?php echo round((mysum($authors_now,'level','Power Elite', 'sales', true) - mysum($authors_1monthago,'level','Power Elite', 'sales', true)) / mycount($authors,'level','Power Elite', true)) ?></span>  Sales per Author (average)</small>
 		<div class="progress">
-			<div class="bar  bar-warning" style="width: <?php echo round((mysum($authors,'level','Power Elite', 'sales', true) - mysum($authors_1monthago,'level','Power Elite', 'sales', true)) / $total_lastmonth_authors_sales * 100) ?>%;"><?php echo (mysum($authors,'level','Power Elite', 'sales', true) - mysum($authors_1monthago,'level','Power Elite', 'sales', true)) ?></div>
+			<div class="bar  bar-warning" style="width: <?php echo round((mysum($authors_now,'level','Power Elite', 'sales', true) - mysum($authors_1monthago,'level','Power Elite', 'sales', true)) / $total_authors_sales_lastmonth * 100) ?>%;"><?php echo (mysum($authors_now,'level','Power Elite', 'sales', true) - mysum($authors_1monthago,'level','Power Elite', 'sales', true)) ?></div>
 		</div>
-		<strong>Elite Authors </strong><small> <span class="label"><?php echo round((mysum($authors,'level','Elite', 'sales', true) - mysum($authors_1monthago,'level','Elite', 'sales', true)) / mycount($authors,'level','Elite', true)) ?></span></small>
+		<strong>Elite Authors </strong><small> <span class="label"><?php echo round((mysum($authors_now,'level','Elite', 'sales', true) - mysum($authors_1monthago,'level','Elite', 'sales', true)) / mycount($authors,'level','Elite', true)) ?></span></small>
 		<div class="progress">
-			<div class="bar  bar-warning" style="width: <?php echo round((mysum($authors,'level','Elite', 'sales', true) - mysum($authors_1monthago,'level','Elite', 'sales', true)) / $total_lastmonth_authors_sales * 100) ?>%;"><?php echo (mysum($authors,'level','Elite', 'sales', true) - mysum($authors_1monthago,'level','Elite', 'sales', true)) ?></div>
+			<div class="bar  bar-warning" style="width: <?php echo round((mysum($authors_now,'level','Elite', 'sales', true) - mysum($authors_1monthago,'level','Elite', 'sales', true)) / $total_authors_sales_lastmonth * 100) ?>%;"><?php echo (mysum($authors_now,'level','Elite', 'sales', true) - mysum($authors_1monthago,'level','Elite', 'sales', true)) ?></div>
 		</div>
-		<strong>Regular Authors </strong><small> <span class="label"><?php echo round((mysum($authors,'level','Regular', 'sales', true) - mysum($authors_1monthago,'level','Regular', 'sales', true)) / mycount($authors,'level','Regular', true)) ?></span></small>
+		<strong>Regular Authors </strong><small> <span class="label"><?php echo round((mysum($authors_now,'level','Regular', 'sales', true) - mysum($authors_1monthago,'level','Regular', 'sales', true)) / mycount($authors,'level','Regular', true)) ?></span></small>
 		<div class="progress">
-			<div class="bar  bar-warning" style="width: <?php echo round((mysum($authors,'level','Regular', 'sales', true) - mysum($authors_1monthago,'level','Regular', 'sales', true)) / $total_lastmonth_authors_sales * 100) ?>%;"><?php echo (mysum($authors,'level','Regular', 'sales', true) - mysum($authors_1monthago,'level','Regular', 'sales', true)) ?></div>
+			<div class="bar  bar-warning" style="width: <?php echo round((mysum($authors_now,'level','Regular', 'sales', true) - mysum($authors_1monthago,'level','Regular', 'sales', true)) / $total_authors_sales_lastmonth * 100) ?>%;"><?php echo (mysum($authors_now,'level','Regular', 'sales', true) - mysum($authors_1monthago,'level','Regular', 'sales', true)) ?></div>
 		</div>
 	</div>
         <div class="span4">
 		<h2>Authors Income</h2>
-		<strong>Power Elite Authors </strong><small> <span class="label">$<?php echo round((mysum($authors,'level','Power Elite', 'income', true) - mysum($authors_1monthago,'level','Power Elite', 'income', true)) / mycount($authors,'level','Power Elite', true) * 0.7) ?></span>  Based on 70% Rate(average)</small>
+		<strong>Power Elite Authors </strong><small> <span class="label">$<?php echo round((mysum($authors_now,'level','Power Elite', 'income', true) - mysum($authors_1monthago,'level','Power Elite', 'income', true)) / mycount($authors_now,'level','Power Elite', true) * 0.7) ?></span>  Based on 70% Rate(average)</small>
 		<div class="progress">
-			<div class="bar  bar-success" style="width: <?php echo round((mysum($authors,'level','Power Elite', 'income', true) - mysum($authors_1monthago,'level','Power Elite', 'income', true)) / (mysum($authors,'level','', 'income') - mysum($authors_1monthago,'level','', 'income')) * 100) ?>%;"> $<?php echo round((mysum($authors,'level','Power Elite', 'income', true) - mysum($authors_1monthago,'level','Power Elite', 'income', true)) * 0.7) ?></div>
+			<div class="bar  bar-success" style="width: <?php echo round((mysum($authors_now,'level','Power Elite', 'income', true) - mysum($authors_1monthago,'level','Power Elite', 'income', true)) / (mysum($authors_now,'level','', 'income') - mysum($authors_1monthago,'level','', 'income')) * 100) ?>%;"> $<?php echo round((mysum($authors_now,'level','Power Elite', 'income', true) - mysum($authors_1monthago,'level','Power Elite', 'income', true)) * 0.7) ?></div>
 		</div>
-		<strong>Elite Authors </strong><small> <span class="label">$<?php echo round((mysum($authors,'level','Elite', 'income', true) - mysum($authors_1monthago,'level','Elite', 'income', true)) / mycount($authors,'level','Elite', true) * 0.7) ?></span>  Based on 70% Rate(average)</small>
+		<strong>Elite Authors </strong><small> <span class="label">$<?php echo round((mysum($authors_now,'level','Elite', 'income', true) - mysum($authors_1monthago,'level','Elite', 'income', true)) / mycount($authors_now,'level','Elite', true) * 0.7) ?></span>  Based on 70% Rate(average)</small>
 		<div class="progress">
-			<div class="bar  bar-success" style="width: <?php echo round((mysum($authors,'level','Elite', 'income', true) - mysum($authors_1monthago,'level','Elite', 'income', true)) / (mysum($authors,'level','', 'income') - mysum($authors_1monthago,'level','', 'income')) * 100) ?>%;"> $<?php echo round((mysum($authors,'level','Elite', 'income', true) - mysum($authors_1monthago,'level','Elite', 'income', true)) * 0.7) ?></div>
+			<div class="bar  bar-success" style="width: <?php echo round((mysum($authors_now,'level','Elite', 'income', true) - mysum($authors_1monthago,'level','Elite', 'income', true)) / (mysum($authors_now,'level','', 'income') - mysum($authors_1monthago,'level','', 'income')) * 100) ?>%;"> $<?php echo round((mysum($authors_now,'level','Elite', 'income', true) - mysum($authors_1monthago,'level','Elite', 'income', true)) * 0.7) ?></div>
 		</div>
-		<strong>Regular Authors </strong><small> <span class="label">$<?php echo round((mysum($authors,'level','Regular', 'income', true) - mysum($authors_1monthago,'level','Regular', 'income', true)) / mycount($authors,'level','Regular', true) * 0.6) ?></span>  Based on 60% Rate(average)</small>
+		<strong>Regular Authors </strong><small> <span class="label">$<?php echo round((mysum($authors_now,'level','Regular', 'income', true) - mysum($authors_1monthago,'level','Regular', 'income', true)) / mycount($authors_now,'level','Regular', true) * 0.6) ?></span>  Based on 60% Rate(average)</small>
 		<div class="progress">
-			<div class="bar  bar-success" style="width: <?php echo round((mysum($authors,'level','Regular', 'income', true) - mysum($authors_1monthago,'level','Regular', 'income', true)) / (mysum($authors,'level','', 'income') - mysum($authors_1monthago,'level','', 'income')) * 100) ?>%;"> $<?php echo round((mysum($authors,'level','Regular', 'income', true) - mysum($authors_1monthago,'level','Regular', 'income', true)) * 0.6) ?></div>
+			<div class="bar  bar-success" style="width: <?php echo round((mysum($authors_now,'level','Regular', 'income', true) - mysum($authors_1monthago,'level','Regular', 'income', true)) / (mysum($authors_now,'level','', 'income') - mysum($authors_1monthago,'level','', 'income')) * 100) ?>%;"> $<?php echo round((mysum($authors_now,'level','Regular', 'income', true) - mysum($authors_1monthago,'level','Regular', 'income', true)) * 0.6) ?></div>
 		</div>
         </div>
   </div>
