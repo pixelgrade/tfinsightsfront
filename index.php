@@ -47,6 +47,28 @@
 		return $counter;
 	}
 	
+	function mycountadv($items,$strings) {
+		$counter = 0;
+		foreach ($items as $item) {
+			$found = false;
+			foreach ($strings as $key => $valuearr) {
+				foreach ($valuearr as $string) {
+					if (strpos($item[$key], $string) !== false) {
+						$counter++;
+						$found = true;
+						break;
+					}
+				}
+				
+				if ($found) {
+					break;
+				}
+			}
+		}
+		
+		return $counter;
+	}
+	
 	function mysum($items,$key,$string,$sumkey, $strict = false) {
 		$sum = 0;
 		foreach ($items as $item) {
@@ -61,6 +83,27 @@
 			}
 		}
 		
+		return $sum;
+	}
+	
+	function mysumadv($items,$strings,$sumkey) {
+		$sum = 0;		
+		foreach ($items as $item) {
+			$found = false;
+			foreach ($strings as $key => $valuearr) {
+				foreach ($valuearr as $string) {
+					if (strpos($item[$key], $string) !== false) {
+						$sum += $item[$sumkey];
+						$found = true;
+						break;
+					}
+				}
+				
+				if ($found) {
+					break;
+				}
+			}
+		}
 		return $sum;
 	}
 	
@@ -81,9 +124,30 @@
 		return $income;
 	}
 	
+	function myincomeadv($items,$strings) {
+		$income = 0;
+		foreach ($items as $item) {
+			$found = false;
+			foreach ($strings as $key => $valuearr) {
+				foreach ($valuearr as $string) {
+					if (strpos($item[$key], $string) !== false) {
+						$income += $item['sales']*$item['cost'];
+						$found = true;
+						break;
+					}
+				}
+				
+				if ($found) {
+					break;
+				}
+			}
+		}
+		return $income;
+	}
+	
 	//config
-	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
-//	$mainurl = 'http://tf-insights.localhost/api/v1/';
+//	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
+	$mainurl = 'http://tf-insights.localhost/api/v1/';
 	
 	//all time stats
 	// get all the entries info
@@ -143,6 +207,9 @@
 	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Monday last week"));
 	$senna_lastweek['sales'] -= $tempstats['sales'];
 	unset($tempstats);
+	
+	//stats for tags
+	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -402,7 +469,6 @@ body {
 		</div>
         </div>
   </div>
-   <hr>
   <div span="8"><span>Only authors that have had at least a sale in the last 30 days</span></div>
   <div class="row-fluid">
 	<div class="span4">
@@ -452,6 +518,79 @@ body {
         </div>
   </div>
    <hr>
+   <div class="row-fluid">
+   	<div class="span3">
+		<?php
+			$count = mycountadv($themes_accepted_30days, ['tags' => ['responsive'],'item' => ['Responsive']]);
+			$total_count = count($themes_accepted_30days);
+			$percent = round($count / $total_count * 100 );
+			$sales = mysumadv($themes_accepted_30days, ['tags' => ['responsive'],'item' => ['Responsive']],'sales');
+			$sales_avg = round($sales / $count);
+			$income = round (myincomeadv($themes_accepted_30days, ['tags' => ['responsive'],'item' => ['Responsive']]) * 0.6);
+			$income_avg = round($income / $count * 0.6);
+		?>
+		<h3>Responsive</h3>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo $percent ?>%;"><?php echo $count ?> / <?php echo $total_count ?> themes</div>
+		</div>
+		<div class="alert alert-info pagination-centered"><strong><?php echo $percent ?>%</strong> - <strong><?php echo $sales ?></strong> s. (<?php echo $sales_avg ?> av) -<strong> $<?php echo $income_avg ?></strong> av</div>
+		<p><strong><?php echo $percent ?>% </strong>of themes added last 30 days are <strong>responsive</strong> with<strong> <?php echo $sales ?> sales (<?php echo $sales_avg ?> avg)</strong>and <strong>$<?php echo $income_avg ?></strong> income (avg) with 60% rate.</p>
+	</div>
+	<div class="span3">
+		<?php
+			$count = mycountadv($themes_accepted_30days, ['tags' => ['localization','wpml','multilingual','translation']]);
+			$total_count = count($themes_accepted_30days);
+			$percent = round($count / $total_count * 100 );
+			$sales = mysumadv($themes_accepted_30days, ['tags' => ['localization','wpml','multilingual','translation']],'sales');
+			$sales_avg = round($sales / $count);
+			$income = round (myincomeadv($themes_accepted_30days, ['tags' => ['localization','wpml','multilingual','translation']]) * 0.6);
+			$income_avg = round($income / $count * 0.6);
+		?>
+		<h3>Localization ready</h3>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo $percent ?>%;"><?php echo $count ?> / <?php echo $total_count ?> themes</div>
+		</div>
+		<div class="alert alert-info pagination-centered"><strong><?php echo $percent ?>%</strong> - <strong><?php echo $sales ?></strong> s. (<?php echo $sales_avg ?> av) -<strong> $<?php echo $income_avg ?></strong> av</div>
+		<p><strong><?php echo $percent ?>% </strong>of themes added last 30 days are <strong>localization ready</strong> with<strong> <?php echo $sales ?> sales (<?php echo $sales_avg ?> avg)</strong>and <strong>$<?php echo $income_avg ?></strong> income (avg) with 60% rate.</p>
+	</div>
+    <div class="span3">
+		<?php
+			$count = mycount($themes_accepted_30days, 'tags', 'parallax');
+			$total_count = count($themes_accepted_30days);
+			$percent = round($count / $total_count * 100 );
+			$sales = mysum($themes_accepted_30days, 'tags', 'parallax','sales');
+			$sales_avg = round($sales / $count);
+			$income = round (myincome($themes_accepted_30days, 'tags', 'parallax') * 0.6);
+			$income_avg = round($income / $count * 0.6);
+		?>
+		<h3>Parallax</h3>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo $percent ?>%;"><?php echo $count ?> / <?php echo $total_count ?> themes</div>
+		</div>
+		<div class="alert alert-info pagination-centered"><strong><?php echo $percent ?>%</strong> - <strong><?php echo $sales ?></strong> s. (<?php echo $sales_avg ?> av) -<strong> $<?php echo $income_avg ?></strong> av</div>
+		<p><strong><?php echo $percent ?>% </strong>of themes added last 30 days are <strong>using parallax</strong> with<strong> <?php echo $sales ?> sales (<?php echo $sales_avg ?> avg)</strong>and <strong>$<?php echo $income_avg ?></strong> income (avg) with 60% rate.</p>
+	</div>
+	<div class="span3">
+		<?php
+			$percent = round(mycount($themes_accepted_30days, 'tags', 'builder') / count($themes_accepted_30days) * 100 );
+			$count = mycount($themes_accepted_30days, 'tags', 'builder');
+			$total_count = count($themes_accepted_30days);
+			$sales = mysum($themes_accepted_30days, 'tags', 'builder','sales');
+			$sales_avg = round($sales / $count);
+			$income = round (myincome($themes_accepted_30days, 'tags', 'builder') * 0.6);
+			$income_avg = round($income / $count * 0.6);
+		?>
+		<h3>Page/Layout Builder</h3>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo $percent ?>%;"><?php echo $count ?> / <?php echo $total_count ?> themes</div>
+		</div>
+		<div class="alert alert-info pagination-centered"><strong><?php echo $percent ?>%</strong> - <strong><?php echo $sales ?></strong> s. (<?php echo $sales_avg ?> av) -<strong> $<?php echo $income_avg ?></strong> av</div>
+		<p><strong><?php echo $percent ?>% </strong>of themes added last 30 days are using a <strong>page/layout Builder</strong> with<strong> <?php echo $sales ?> sales (<?php echo $sales_avg ?> avg)</strong>and <strong>$<?php echo $income_avg ?></strong> income (avg) with 60% rate.</p>
+	</div>
+        
+  </div>
+   <hr>
+   <h2 class="well">Theme Specific Stats</h2>
   <div class="row-fluid">
    	<div class="span4">
 		<h3>Senna Sales - This week</h3>
@@ -471,44 +610,6 @@ body {
     </div>
   </div>
  <hr>
-  <div class="row-fluid">
-   	<div class="span3">
-          <h3>Responsive</h3>
-             <div class="progress">
-        <div class="bar" style="width: 90%;">623 / 800 themes</div>
-      </div>
-          <div class="alert alert-info pagination-centered"><strong>98%</strong> - <strong>1400</strong> sales -<strong> $200</strong> avg</div>
-          <p><strong>98% </strong>of themes added last 30 days are <strong>responsive</strong></p>
-        </div>
-        <div class="span3">
-          <h3>Localization ready</h3>
-             <div class="progress">
-        <div class="bar" style="width: 70%;">423</div>
-      </div>
-          <div class="alert alert-info pagination-centered"><strong>70%</strong> - <strong>60</strong> sales - <strong>$1400</strong> avg</div>
-          <p><strong>70% </strong>of themes added last 30 days are <strong>localization ready</strong> with<strong> 60 sales </strong>and <strong>$1400</strong> income (average).</p>
-        </div>
-        
-        <div class="span3">
-          <h3>Parallax</h3>
-             <div class="progress">
-        <div class="bar" style="width: 20%;">93</div>
-      </div>
-          <div class="alert alert-info pagination-centered"><strong>22%</strong> - <strong>60</strong> sales - <strong>$1800</strong> avg</div>
-          <p><strong>22% </strong>of themes added last 30 days are <strong>using parallax</strong> with<strong> 60 sales </strong>and <strong>$1800</strong> income (average).</p>
-        </div>
-        
-        <div class="span3">
-          <h3>Page Builder</h3>
-             <div class="progress">
-        <div class="bar" style="width: 16%;">23</div>
-      </div>
-          <div class="alert alert-info pagination-centered"><strong>18%</strong> - <strong>120</strong> sales - <strong>$2400</strong></div>
-          <p><strong>18% </strong>of themes added last 30 days are using a <strong>page builder </strong>with<strong> 120 sales </strong>and <strong>$2400</strong> income (average).</p>
-        </div>
-        
-  </div>
-      <hr>
       <div class="footer">
     <p>&copy; PixelGrade 2013</p>
   </div>
