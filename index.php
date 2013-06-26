@@ -1,4 +1,6 @@
 <?php
+	date_default_timezone_set('Australia/Melbourne');
+
 	//here we go
 	
 	function grab_data_from_url($json_url) {
@@ -415,11 +417,11 @@ body {
           <h2>New Themes</h2>
           <strong>Creative - </strong>Portfolio
           <div class="progress">
-        <div class="bar" style="width: <?php echo round(mycount($themes_accepted_30days,'category_name','Portfolio') / $total_themes_30days * 100) ?>%;"> <?php echo mycount($themes_accepted_30days,'category_name','Portfolio') ?></div>
+        <div class="bar" style="width: <?php echo round(mycount($themes_accepted_30days,'category_slug','creative') / $total_themes_30days * 100) ?>%;"> <?php echo mycount($themes_accepted_30days,'category_slug','creative') ?></div>
       </div>
           <strong>Corporate</strong> - Business
           <div class="progress">
-        <div class="bar" style="width: <?php echo round(mycount($themes_accepted_30days,'category_name','Business') / $total_themes_30days * 100) ?>%;"> <?php echo mycount($themes_accepted_30days,'category_name','Business') ?></div>
+        <div class="bar" style="width: <?php echo round(mycount($themes_accepted_30days,'category_slug','corporate') / $total_themes_30days * 100) ?>%;"> <?php echo mycount($themes_accepted_30days,'category_slug','corporate') ?></div>
       </div>
           <strong>Blog/ Magazine</strong>
           <div class="progress">
@@ -432,38 +434,38 @@ body {
         </div>
     <div class="span4">
           <h2>New Theme Sales</h2>
-		<strong>Creative</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','creative','sales') / $total_themes_30days),2) ?></span> Sales per Theme (average)</small>
+		<strong>Creative</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','creative','sales') / mycount($themes_accepted_30days,'category_slug','creative')),2) ?></span> Sales per Theme (average)</small>
 		<div class="progress">
 		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','creative','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','creative','sales') ?> <span class="muted1"></span></div>
 		</div>
-        <strong>Corporate</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','corporate','sales') / $total_themes_30days),2) ?></span></small>
+        <strong>Corporate</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','corporate','sales') / mycount($themes_accepted_30days,'category_slug','corporate')),2) ?></span></small>
 		<div class="progress">
 		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','corporate','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','corporate','sales') ?> <span class="muted1"></span></div>
 		</div>
-		<strong>Blog / Magazine</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') / $total_themes_30days),2) ?></span></small>
+		<strong>Blog / Magazine</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') / mycount($themes_accepted_30days,'category_slug','blog-magazine')),2) ?></span></small>
 		<div class="progress">
 		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','blog-magazine','sales') ?> <span class="muted1"></span></div>
 		</div>
-		<strong>eCommerce</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','ecommerce','sales') / $total_themes_30days),2) ?></span></small>
+		<strong>eCommerce</strong> <small>- <span class="label label-info"><?php echo round((mysum($themes_accepted_30days,'category_slug','ecommerce','sales') / mycount($themes_accepted_30days,'category_slug','ecommerce')),2) ?></span></small>
 		<div class="progress">
 		  <div class="bar bar-warning" style="width: <?php echo round(mysum($themes_accepted_30days,'category_slug','ecommerce','sales') / $total_sales_30days *100) ?>%;"> <?php echo mysum($themes_accepted_30days,'category_slug','ecommerce','sales') ?> <span class="muted1"></span></div>
 		</div>
         </div>
     <div class="span4">
           <h2>New Themes Income <small>Based on 60% rate</small></h2>
-		<strong>Creative</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','creative') / $total_themes_30days * 0.6) ?></span> income per Theme (average)</small>
+		<strong>Creative</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','creative') / mycount($themes_accepted_30days,'category_slug','creative') * 0.6) ?></span> income per Theme (average)</small>
 		<div class="progress">
 			<div class="bar bar-success" style="width: <?php echo round(myincome($themes_accepted_30days,'category_slug','creative') / $total_income_30days * 100) ?>%;"> $<?php echo round(myincome($themes_accepted_30days,'category_slug','creative') * 0.6) ?> <span class="muted1"></span></div>
 		</div>
-		<strong>Corporate</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','corporate') / $total_themes_30days * 0.6) ?></span></small>
+		<strong>Corporate</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','corporate') / mycount($themes_accepted_30days,'category_slug','corporate') * 0.6) ?></span></small>
 		<div class="progress">
 			<div class="bar bar-success" style="width: <?php echo round(myincome($themes_accepted_30days,'category_slug','corporate') / $total_income_30days * 100) ?>%;"> $<?php echo round(myincome($themes_accepted_30days,'category_slug','corporate') * 0.6) ?> <span class="muted1"></span></div>
 		</div>
-        <strong>Blog/ Magazine</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','blog-magazine') / $total_themes_30days * 0.6) ?></span></small>
+        <strong>Blog/ Magazine</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','blog-magazine') / mycount($themes_accepted_30days,'category_slug','blog-magazine') * 0.6) ?></span></small>
 		<div class="progress">
 			<div class="bar bar-success" style="width: <?php echo round(myincome($themes_accepted_30days,'category_slug','blog-magazine') / $total_income_30days * 100) ?>%;"> $<?php echo round(myincome($themes_accepted_30days,'category_slug','blog-magazine') * 0.6) ?> <span class="muted1"></span></div>
 		</div>
-        <strong>eCommerce</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','ecommerce') / $total_themes_30days * 0.6) ?></span></small>
+        <strong>eCommerce</strong> <small>- <span class="label label-info">$<?php echo round(myincome($themes_accepted_30days,'category_slug','ecommerce') / mycount($themes_accepted_30days,'category_slug','ecommerce') * 0.6) ?></span></small>
 		<div class="progress">
 			<div class="bar bar-success" style="width: <?php echo round(myincome($themes_accepted_30days,'category_slug','ecommerce') / $total_income_30days * 100) ?>%;"> $<?php echo round(myincome($themes_accepted_30days,'category_slug','ecommerce') * 0.6) ?> <span class="muted1"></span></div>
 		</div>
