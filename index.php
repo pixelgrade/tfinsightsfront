@@ -198,16 +198,25 @@
 	
 	if (date('N', time()) == 1) { //today is monday so no data yet
 		$senna_thisweek = null;
+		$fusethisweek = null;
 	} else {
 		$senna_thisweek = grab_data_from_url($mainurl.'items?itemid=4609270');
 		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Monday this week"));
 		$senna_thisweek['sales'] -= $tempstats['sales'];
+		
+		$fuse_thisweek = grab_data_from_url($mainurl.'items?itemid=5136837');
+		$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime("Monday this week"));
+		$fuse_thisweek['sales'] -= $tempstats['sales'];
 		unset($tempstats);
 	}
 	
 	$senna_lastweek = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Sunday last week"));
 	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Monday last week"));
 	$senna_lastweek['sales'] -= $tempstats['sales'];
+	
+	$fuse_lastweek = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime("Sunday last week"));
+	$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime("Monday last week"));
+	$fuse_lastweek['sales'] -= $tempstats['sales'];
 	unset($tempstats);
 	
 	//stats for tags
@@ -606,6 +615,25 @@ body {
 		<h3>Senna Sales - Last week</h3>
 		<?php if (!empty($senna_lastweek)): ?>
 		<p><strong><?php echo $senna_lastweek['sales'] ?></strong> times sold </p>
+		<?php else: ?>
+		<p> No data. Bummer!</p>
+		<?php endif; ?>
+    </div>
+  </div>
+ <hr>
+	<div class="row-fluid">
+   	<div class="span4">
+		<h3>Fuse Sales - This week</h3>
+		<?php if (!empty($fusethisweek)): ?>
+		<p><strong><?php echo $fuse_thisweek['sales'] ?></strong> times sold </p>
+		<?php else: ?>
+		<p> No data yet. Wait a day!</p>
+		<?php endif; ?>
+    </div>
+	<div class="span4">
+		<h3>Fuse Sales - Last week</h3>
+		<?php if (!empty($fuse_lastweek)): ?>
+		<p><strong><?php echo $fuse_lastweek['sales'] ?></strong> times sold </p>
 		<?php else: ?>
 		<p> No data. Bummer!</p>
 		<?php endif; ?>
