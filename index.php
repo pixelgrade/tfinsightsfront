@@ -147,6 +147,17 @@
 		return $income;
 	}
 	
+	//to get the start and end dates of a week with a given date
+	function x_week_range($date) {
+		$ts = strtotime($date);
+		$start = (date('w', $ts) == 0) ? $ts : strtotime('last sunday', $ts);
+		return array(date('Y-m-d', $start),
+					 date('Y-m-d', strtotime('next saturday', $start)));
+	}
+	
+	$this_week_range = x_week_range(time());
+	$last_week_range = x_week_range(strtotime("Tuesday last week"));
+	
 	//config
 	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
 //	$mainurl = 'http://tf-insights.localhost/api/v1/';
@@ -203,21 +214,21 @@
 		$fusethisweek = null;
 	} else {
 		$senna_thisweek = grab_data_from_url($mainurl.'items?itemid=4609270');
-		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Sunday this week"));
+		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime($this_week_range[0]));
 		$senna_thisweek['sales'] -= $tempstats['sales'];
 		
 		$fuse_thisweek = grab_data_from_url($mainurl.'items?itemid=5136837');
-		$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime("Sunday this week"));
+		$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime($this_week_range[0]));
 		$fuse_thisweek['sales'] -= $tempstats['sales'];
 		unset($tempstats);
 	}
 	
-	$senna_lastweek = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Saturday last week"));
-	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime("Sunday last week"));
+	$senna_lastweek = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime($last_week_range[1]));
+	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime($last_week_range[0]));
 	$senna_lastweek['sales'] -= $tempstats['sales'];
 	
-	$fuse_lastweek = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime("Saturday last week"));
-	$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime("Sunday last week"));
+	$fuse_lastweek = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime($last_week_range[1]));
+	$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime($last_week_range[0]));
 	$fuse_lastweek['sales'] -= $tempstats['sales'];
 	unset($tempstats);
 	
