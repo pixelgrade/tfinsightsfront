@@ -160,7 +160,7 @@
 	
 	$this_week_range = x_week_range(date("Y-m-d H:i:s"));
 	var_dump($this_week_range);
-	$last_week_range = x_week_range("Y-m-d H:i:s", strtotime("Tuesday last week"));
+	$last_week_range = x_week_range("Tuesday last week");
 	var_dump($last_week_range);
 	
 	//config
