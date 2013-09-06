@@ -156,7 +156,9 @@
 	}
 	
 	$this_week_range = x_week_range(time());
+	var_dump($this_week_range);
 	$last_week_range = x_week_range(strtotime("Tuesday last week"));
+	var_dump($last_week_range);
 	
 	//config
 	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
