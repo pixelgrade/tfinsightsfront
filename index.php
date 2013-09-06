@@ -149,8 +149,11 @@
 	
 	//to get the start and end dates of a week with a given date
 	function x_week_range($date) {
+		var_dump($date);
 		$ts = strtotime($date);
+		var_dump($ts);
 		$start = (date('w', $ts) == 0) ? $ts : strtotime('last sunday', $ts);
+		var_dump($start);
 		return array(date('Y-m-d', $start),
 					 date('Y-m-d', strtotime('next saturday', $start)));
 	}
