@@ -241,7 +241,8 @@
 			$tempstats = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime('-1 day',strtotime($this_week_range[0])));
 			
 			//substract them from the sales to the day
-			$thisweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id']) - $tempstats;
+			$thisweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id']);
+			$thisweek[$key] -= $tempstats;
 		}
 	}
 	
@@ -251,7 +252,8 @@
 		$tempstats = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime('-1 day',strtotime($last_week_range[0])));
 
 		//substract them from the sales to the day
-		$lastweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime($last_week_range[1])) - $tempstats;
+		$lastweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime($last_week_range[1]));
+		$lastweek[$key] -= $tempstats;
 	}
 	
 	//stats for tags
