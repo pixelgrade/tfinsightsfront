@@ -1,6 +1,19 @@
 <?php
 	date_default_timezone_set('Australia/Melbourne');
-	var_dump(\app\Date::default_timezone_offset());
+	
+	function default_timezone_offset()
+	{
+		$now = new \DateTime();
+		$mins = $now->getOffset() / 60;
+		$sgn = ($mins < 0 ? -1 : 1);
+		$mins = \abs($mins);
+		$hrs = \floor($mins / 60);
+		$mins -= $hrs * 60;
+
+		return \sprintf('%+d:%02d', $hrs * $sgn, $mins);
+	}
+	
+	var_dump(default_timezone_offset());
 	//here we go
 	
 	function grab_data_from_url($json_url) {
