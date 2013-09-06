@@ -219,21 +219,21 @@
 		$fusethisweek = null;
 	} else {
 		$senna_thisweek = grab_data_from_url($mainurl.'items?itemid=4609270');
-		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime($this_week_range[0]));
+		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime('-1 day',strtotime($this_week_range[0])));
 		$senna_thisweek['sales'] -= $tempstats['sales'];
 		
 		$fuse_thisweek = grab_data_from_url($mainurl.'items?itemid=5136837');
-		$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime($this_week_range[0]));
+		$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime('-1 day',strtotime($this_week_range[0])));
 		$fuse_thisweek['sales'] -= $tempstats['sales'];
 		unset($tempstats);
 	}
 	
 	$senna_lastweek = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime($last_week_range[1]));
-	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime($last_week_range[0]));
+	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime('-1 day',strtotime($last_week_range[0])));
 	$senna_lastweek['sales'] -= $tempstats['sales'];
 	
 	$fuse_lastweek = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime($last_week_range[1]));
-	$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime($last_week_range[0]));
+	$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime('-1 day',strtotime($last_week_range[0])));
 	$fuse_lastweek['sales'] -= $tempstats['sales'];
 	unset($tempstats);
 	
