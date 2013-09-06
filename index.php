@@ -1,19 +1,6 @@
 <?php
 	date_default_timezone_set('Australia/Melbourne');
 	
-	function default_timezone_offset()
-	{
-		$now = new \DateTime();
-		$mins = $now->getOffset() / 60;
-		$sgn = ($mins < 0 ? -1 : 1);
-		$mins = \abs($mins);
-		$hrs = \floor($mins / 60);
-		$mins -= $hrs * 60;
-
-		return \sprintf('%+d:%02d', $hrs * $sgn, $mins);
-	}
-	
-	var_dump(default_timezone_offset());
 	//here we go
 	
 	function grab_data_from_url($json_url) {
@@ -163,6 +150,8 @@
 	//config
 	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
 //	$mainurl = 'http://tf-insights.localhost/api/v1/';
+	
+var_dump($mainurl.'items?itemid=4609270&date='.strtotime("Monday this week"));
 	
 	//all time stats
 	// get all the entries info
