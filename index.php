@@ -155,7 +155,7 @@
 					 date('Y-m-d', strtotime('next saturday', $start)));
 	}
 	
-	$this_week_range = x_week_range(time());
+	$this_week_range = x_week_range(date());
 	var_dump($this_week_range);
 	$last_week_range = x_week_range(strtotime("Tuesday last week"));
 	var_dump($last_week_range);
