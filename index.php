@@ -159,9 +159,9 @@
 	}
 	
 	$this_week_range = x_week_range(date("Y-m-d H:i:s"));
-	var_dump($this_week_range);
+//	var_dump($this_week_range);
 	$last_week_range = x_week_range("Tuesday last week");
-	var_dump($last_week_range);
+//	var_dump($last_week_range);
 	
 	//config
 	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
@@ -214,9 +214,9 @@
 	$total_authors_1monthago = count($authors_1monthago);
 	$total_authors_sales_lastmonth = mysum($authors_now,'level','','sales') - mysum($authors_1monthago,'level','','sales');
 	
-	if (date('N', time()) == 1) { //today is monday so no data yet
+	if (date('w', time()) == 0) { //today is Sunday(first week day) so no data yet
 		$senna_thisweek = null;
-		$fusethisweek = null;
+		$fuse_thisweek = null;
 	} else {
 		$senna_thisweek = grab_data_from_url($mainurl.'items?itemid=4609270');
 		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime('-1 day',strtotime($this_week_range[0])));
@@ -642,7 +642,7 @@ body {
 	<div class="row-fluid">
    	<div class="span4">
 		<h3>Fuse Sales - This week</h3>
-		<?php if (!empty($fusethisweek)): ?>
+		<?php if (!empty($fuse_thisweek)): ?>
 		<p><strong><?php echo $fuse_thisweek['sales'] ?></strong> times sold </p>
 		<?php else: ?>
 		<p> No data yet. Wait a day!</p>
