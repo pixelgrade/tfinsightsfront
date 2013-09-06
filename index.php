@@ -255,7 +255,7 @@
 		$lastweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime($last_week_range[1]))['sales'];
 		$lastweek[$key] -= $tempstats['sales'];
 	}
-	var_dump($thisweek, $lastweek);
+	
 	//stats for tags
 	
 ?>
