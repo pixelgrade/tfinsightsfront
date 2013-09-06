@@ -1,6 +1,6 @@
 <?php
 	date_default_timezone_set('Australia/Melbourne');
-
+	var_dump(\app\Date::default_timezone_offset());
 	//here we go
 	
 	function grab_data_from_url($json_url) {
@@ -327,7 +327,7 @@ body {
       <div class="jumbotron">
        <p class="lead">&nbsp;</p>
     <h1>ThemeForest Insights</h1>
-	<p class="text-center">The current data and time: <?php echo date("D M d, Y G:i a"); ?></p>
+	<p class="text-center">The current date and time: <?php echo date("D M d, Y G:i a"); ?> (Envato time - Australia/Melbourne)</p>
   </div>
       <hr>
       
