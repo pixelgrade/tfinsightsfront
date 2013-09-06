@@ -155,11 +155,6 @@
 					 date('Y-m-d', strtotime('next saturday', $start)));
 	}
 	
-	$this_week_range = x_week_range(date("Y-m-d H:i:s"));
-//	var_dump($this_week_range);
-	$last_week_range = x_week_range("Tuesday last week");
-//	var_dump($last_week_range);
-	
 	//config
 	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
 //	$mainurl = 'http://tf-insights.localhost/api/v1/';
@@ -211,28 +206,53 @@
 	$total_authors_1monthago = count($authors_1monthago);
 	$total_authors_sales_lastmonth = mysum($authors_now,'level','','sales') - mysum($authors_1monthago,'level','','sales');
 	
+	$thisweek = array(); //store the data bot our themes for this week
+	$this_week_range = x_week_range(date("Y-m-d H:i:s"));
+	
+	$lastweek = array();
+	$last_week_range = x_week_range("Tuesday last week");
+	
+	//our themes that we want displayed
+	$ouritems = array(
+			'senna' => array (
+				'id' => '4609270',
+				'name' => 'Senna',
+			),
+			'fuse' => array (
+				'id' => '5136837',
+				'name' => 'Fuse',
+			),
+			'cityhub' => array (
+				'id' => '5425258',
+				'name' => 'CityHub',
+			),
+			'bliv' => array (
+				'id' => '4141443',
+				'name' => 'B:Liv',
+			),
+		);
+	
+	//set this week's statistics
 	if (date('w', time()) == 0) { //today is Sunday(first week day) so no data yet
-		$senna_thisweek = null;
-		$fuse_thisweek = null;
-	} else {
-		$senna_thisweek = grab_data_from_url($mainurl.'items?itemid=4609270');
-		$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime('-1 day',strtotime($this_week_range[0])));
-		$senna_thisweek['sales'] -= $tempstats['sales'];
 		
-		$fuse_thisweek = grab_data_from_url($mainurl.'items?itemid=5136837');
-		$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime('-1 day',strtotime($this_week_range[0])));
-		$fuse_thisweek['sales'] -= $tempstats['sales'];
-		unset($tempstats);
+	} else {
+		foreach ($ouritems as $key => $item) {
+			//grab the sales prior to the start of this week
+			$tempstats = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime('-1 day',strtotime($this_week_range[0])));
+			
+			//substract them from the sales to the day
+			$thisweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id']) - $tempstats;
+		}
 	}
 	
-	$senna_lastweek = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime($last_week_range[1]));
-	$tempstats = grab_data_from_url($mainurl.'items?itemid=4609270&date='.strtotime('-1 day',strtotime($last_week_range[0])));
-	$senna_lastweek['sales'] -= $tempstats['sales'];
-	
-	$fuse_lastweek = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime($last_week_range[1]));
-	$tempstats = grab_data_from_url($mainurl.'items?itemid=5136837&date='.strtotime('-1 day',strtotime($last_week_range[0])));
-	$fuse_lastweek['sales'] -= $tempstats['sales'];
-	unset($tempstats);
+	//set last weeks statistics
+	foreach ($ouritems as $key => $item) {
+		//grab the sales prior to the start of last week
+		$tempstats = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime('-1 day',strtotime($last_week_range[0])));
+
+		//substract them from the sales to the day
+		$lastweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime($last_week_range[1])) - $tempstats;
+	}
 	
 	//stats for tags
 	
@@ -617,44 +637,30 @@ body {
   </div>
    <hr>
    <h2 class="well">Theme Specific Stats</h2>
+   <?php if (!empty($ouritems)):
+	   foreach ($ouritems as $key => $item): ?>
   <div class="row-fluid">
    	<div class="span4">
-		<h3>Senna Sales - This week</h3>
-		<?php if (!empty($senna_thisweek)): ?>
-		<p><strong><?php echo $senna_thisweek['sales'] ?></strong> times sold </p>
+		<h3><?= $item['name'] ?> Sales - This week</h3>
+		<?php if (!empty($thisweek[$key])): ?>
+		<p><strong><?= $thisweek[$key] ?></strong> times sold </p>
 		<?php else: ?>
 		<p> No data yet. Wait a day!</p>
 		<?php endif; ?>
     </div>
 	<div class="span4">
-		<h3>Senna Sales - Last week</h3>
-		<?php if (!empty($senna_lastweek)): ?>
-		<p><strong><?php echo $senna_lastweek['sales'] ?></strong> times sold </p>
+		<h3><?= $item['name'] ?> Sales - Last week</h3>
+		<?php if (!empty($lastweek[$key])): ?>
+		<p><strong><?= $lastweek[$key] ?></strong> times sold </p>
 		<?php else: ?>
 		<p> No data. Bummer!</p>
 		<?php endif; ?>
     </div>
   </div>
  <hr>
-	<div class="row-fluid">
-   	<div class="span4">
-		<h3>Fuse Sales - This week</h3>
-		<?php if (!empty($fuse_thisweek)): ?>
-		<p><strong><?php echo $fuse_thisweek['sales'] ?></strong> times sold </p>
-		<?php else: ?>
-		<p> No data yet. Wait a day!</p>
-		<?php endif; ?>
-    </div>
-	<div class="span4">
-		<h3>Fuse Sales - Last week</h3>
-		<?php if (!empty($fuse_lastweek)): ?>
-		<p><strong><?php echo $fuse_lastweek['sales'] ?></strong> times sold </p>
-		<?php else: ?>
-		<p> No data. Bummer!</p>
-		<?php endif; ?>
-    </div>
-  </div>
- <hr>
+ <?php endforeach;
+	endif;
+	?>
       <div class="footer">
     <p>&copy; PixelGrade 2013</p>
   </div>
