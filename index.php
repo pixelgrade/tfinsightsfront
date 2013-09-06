@@ -239,7 +239,7 @@
 		foreach ($ouritems as $key => $item) {
 			//grab the sales prior to the start of this week
 			$tempstats = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime('-1 day',strtotime($this_week_range[0])));
-			
+			var_dump($mainurl.'items?itemid='.$item['id'].'&date='.strtotime('-1 day',strtotime($this_week_range[0])));
 			//substract them from the sales to the day
 			$thisweek[$key] = (int)grab_data_from_url($mainurl.'items?itemid='.$item['id']);
 			$thisweek[$key] -= (int)$tempstats;
