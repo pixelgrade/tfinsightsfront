@@ -319,7 +319,7 @@ body {
       <div class="masthead">
     <h4 class="alert alert-error pull-left">
     The FBI Files on ThemeForest
-    </h3>
+    </h4>
     <h4 class="alert pull-right">TOP SECRET DOCUMENT</h4>
   </div>
       
@@ -327,7 +327,7 @@ body {
       <div class="jumbotron">
        <p class="lead">&nbsp;</p>
     <h1>ThemeForest Insights</h1>
-   
+	<p class="text-center">The current data and time: <?php echo date("D M d, Y G:i a"); ?></p>
   </div>
       <hr>
       
