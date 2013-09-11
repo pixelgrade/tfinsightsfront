@@ -150,9 +150,9 @@
 	//to get the start and end dates of a week with a given date
 	function x_week_range($date) {
 		$ts = strtotime($date);
-		$start = (date('w', $ts) == 0) ? $ts : strtotime('last sunday', $ts);
+		$start = (date('N', $ts) == 1) ? $ts : strtotime('last monday', $ts);
 		return array(date('Y-m-d', $start),
-					 date('Y-m-d', strtotime('next saturday', $start)));
+					 date('Y-m-d', strtotime('next sunday', $start)));
 	}
 	
 	//config
@@ -184,7 +184,8 @@
 	
 	//determine the day of the week with most accepted themes
 	$common_acceptance_day = grab_data_from_url($mainurl.'items?common_acceptance_day');
-	$dowMap = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+	//we use mysql WEEKDAY() to get the day so its 0=Monday..6=Sunday numbered
+	$dowMap = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 	
 	//last 30 days stats
 	$themes_accepted_30days = grab_data_from_url($mainurl.'items?accepted=30&all');
