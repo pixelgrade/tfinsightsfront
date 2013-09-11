@@ -148,6 +148,7 @@
 	}
 	
 	function sales_graph($itemID, $days) {
+		global $mainurl;
 		$uniqueid = uniqid();
 		$startdate = strtotime('-'.$days.' day');
 		var_dump($startdate);
