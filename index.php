@@ -150,7 +150,7 @@
 	function sales_graph($itemID, $days) {
 		global $mainurl;
 		$uniqueid = uniqid();
-		$itemsales = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&period='.($days+1));
+		$itemsales = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&period='.($days));
 		var_dump($itemsales);
 		?>
 		<div id="<?= $uniqueid ?>" style="height:200px"></div>
