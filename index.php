@@ -155,7 +155,7 @@
 		?>
 		<div id="<?= $uniqueid ?>" style="height:200px"></div>
 		<script type="text/javascript">
-			$( document ).ready(function() {
+			jQuery( document ).ready(function() {
   			// Use Morris.Area instead of Morris.Line
 			// Docs: http://www.oesmith.co.uk/morris.js/lines.html
 				var sales_data_<?= $uniqueid ?> = [
@@ -760,7 +760,7 @@ body {
   	</div>
   	<div class="span6">
   	<h4><i>Fuse</i> Sales (last 30 days) </h4>
-  		<<?php sales_graph(5136837, 30); ?>
+  		<?php sales_graph(5136837, 30); ?>
   	</div>
   </div>
   
