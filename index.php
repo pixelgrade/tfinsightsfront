@@ -769,7 +769,15 @@ body {
   	</div>
   </div>
   
-  
+  <div class="row-fluid">
+  	<div class="span6">
+  	<h4><i>Salient</i> Sales (last 30 days) </h4>
+  		<?php sales_graph(4363266, 30); ?>
+  	</div>
+  	<div class="span6">
+  	
+  	</div>
+  </div>
 	   <hr>
       <div class="footer">
     <p>&copy; PixelGrade 2013</p>
