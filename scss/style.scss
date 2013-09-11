@@ -1,0 +1,8 @@
+// @import "compass";
+
+//Minimum Width for Progress Bars (to make text readable)
+.progress .bar {
+	min-width:20%;
+}
+@import "charts";
+@import "shame";

@@ -270,6 +270,7 @@
 
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
     <style type="text/css">
 body {
 	padding-top: 20px;
@@ -360,7 +361,7 @@ body {
     <h4 class="alert pull-right">TOP SECRET DOCUMENT</h4>
   </div>
       
-      <!-- Jumbotron -->
+      Jumbotron
       <div class="jumbotron">
        <p class="lead">&nbsp;</p>
     <h1>ThemeForest Insights</h1>
@@ -368,7 +369,7 @@ body {
   </div>
       <hr>
       
-      <!-- Example row of columns -->
+      Example row of columns
       <h2 class="well">All time Stats</h2>
   <div class="row-fluid">
     <div class="span2">
@@ -663,6 +664,60 @@ body {
  <?php endforeach;
 	endif;
 	?>
+	<div class="row-fluid">
+	
+		<div class="span4">
+		  <h4>Best Selling Themes (last 30 days): </h4>
+		  <ol>
+		  	<li>Senna - 240 Sales</li>
+		  	<li>Fuse - 192 Sales</li>
+		  	<li>CityHub - 150 Sales</li>
+		  	<li>Senna - 240 Sales</li>
+		  	<li>Fuse - 192 Sales</li>
+		  	<li>CityHub - 150 Sales</li>
+		  </ol>
+		</div>
+		
+		<div class="span4">
+		  <h4>Best Selling <i>Category</i> Themes: </h4>
+		  <ol>
+		  	<li>Senna - 240 Sales</li>
+		  	<li>Fuse - 192 Sales</li>
+		  	<li>CityHub - 150 Sales</li>
+		  	<li>Senna - 240 Sales</li>
+		  	<li>Fuse - 192 Sales</li>
+		  	<li>CityHub - 150 Sales</li>
+		  </ol>
+		</div>
+		
+		<div class="span4">
+		  <h4>Best Selling <i>Tag</i> Themes: </h4>
+		  <ol>
+		  	<li>Senna - 240 Sales</li>
+		  	<li>Fuse - 192 Sales</li>
+		  	<li>CityHub - 150 Sales</li>
+		  	<li>Senna - 240 Sales</li>
+		  	<li>Fuse - 192 Sales</li>
+		  	<li>CityHub - 150 Sales</li>
+		  </ol>
+		</div>
+  </div>
+  <hr>
+  
+  <!-- Graphs -->
+  <div class="row-fluid">
+  	<div class="span6">
+  	<h4><i>Senna</i> Sales (last 30 days) </h4>
+  		<div id="graph_1" style="height:200px"></div>
+  	</div>
+  	<div class="span6">
+  	<h4><i>Fuse</i> Sales (last 30 days) </h4>
+  		<div id="graph_2" style="height:200px"></div>
+  	</div>
+  </div>
+  
+  
+	   <hr>
       <div class="footer">
     <p>&copy; PixelGrade 2013</p>
   </div>
@@ -672,7 +727,7 @@ body {
 <!-- Le javascript
     ================================================== --> 
 <!-- Placed at the end of the document so the pages load faster --> 
-<script src="js/jquery.js"></script> 
+<script src="js/jquery-2.0.3.min.js"></script> 
 <script src="js/bootstrap-transition.js"></script> 
 <script src="js/bootstrap-alert.js"></script> 
 <script src="js/bootstrap-modal.js"></script> 
@@ -683,7 +738,62 @@ body {
 <script src="js/bootstrap-popover.js"></script> 
 <script src="js/bootstrap-button.js"></script> 
 <script src="js/bootstrap-collapse.js"></script> 
-<script src="js/bootstrap-carousel.js"></script> 
-<script src="js/bootstrap-typeahead.js"></script>
+<script src="js/bootstrap-carousel.js"></script>
+
+<script src="js/charts/raphael.min.js"></script>
+<script src="js/charts/morris.min.js"></script>
+<script type="text/javascript">
+  			// Use Morris.Area instead of Morris.Line
+				// Docs: http://www.oesmith.co.uk/morris.js/lines.html
+
+				var sales_data_1 = [
+				  {"day": "2012-09-01", "sales": 07},
+			    {"day": "2012-09-02", "sales": 51},
+			    {"day": "2012-09-03", "sales": 69},
+			    {"day": "2012-09-04", "sales": 46},
+			    {"day": "2012-09-05", "sales": 57},
+			    {"day": "2012-09-06", "sales": 48},
+			    {"day": "2012-09-07", "sales": 71},
+			    {"day": "2012-09-08", "sales": 71},
+			    {"day": "2012-09-09", "sales": 01},
+			    {"day": "2012-09-10", "sales": 15}
+				];
+
+				Morris.Area({
+				  element: 'graph_1',
+				  behaveLikeLine: true,
+				  data: sales_data_1,
+				  xkey: 'day',
+				  xLabels: 'day',
+				  labels: ['Sales'],
+				  ykeys: ['sales'],
+				  parseTime: false,
+				});
+
+				var sales_data_2 = [
+				  {"day": "2012-09-01", "sales": 07},
+			    {"day": "2012-09-02", "sales": 51},
+			    {"day": "2012-09-03", "sales": 69},
+			    {"day": "2012-09-04", "sales": 46},
+			    {"day": "2012-09-05", "sales": 57},
+			    {"day": "2012-09-06", "sales": 48},
+			    {"day": "2012-09-07", "sales": 71},
+			    {"day": "2012-09-08", "sales": 71},
+			    {"day": "2012-09-09", "sales": 30},
+			    {"day": "2012-09-10", "sales": 15}
+				];
+
+				Morris.Bar({
+				  element: 'graph_2',
+				  behaveLikeLine: true,
+				  data: sales_data_1,
+				  xkey: 'day',
+				  xLabels: 'day',
+				  labels: ['Sales'],
+				  ykeys: ['sales'],
+				  parseTime: false,
+				});
+  		</script>
+
 </body>
 </html>
