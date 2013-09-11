@@ -150,6 +150,7 @@
 	function sales_graph($itemID, $days) {
 		$uniqueid = uniqid();
 		$startdate = strtotime('-'.$days.' day');
+		var_dump($startdate);
 		?>
 		<div id="<?= $uniqueid ?>" style="height:200px"></div>
 		<script type="text/javascript">
@@ -161,6 +162,7 @@
 			for ($x = 0; $x < $days; $x++) {
 				//grab the sales for that day
 				$currentdate = strtotime('+'.$x.' day',$startdate);
+				var_dump($currentdate);
 				$tempstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.$currentdate);
 				var_dump($tempstats);
 				$str = '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.$tempstats['sales'].'}';
