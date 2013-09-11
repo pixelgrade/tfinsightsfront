@@ -417,7 +417,6 @@ body {
   </div>
       <hr>
       
-      Example row of columns
       <h2 class="well">All time Stats</h2>
   <div class="row-fluid">
     <div class="span2">
