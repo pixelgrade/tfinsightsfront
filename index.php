@@ -1,14 +1,38 @@
 <?php
 	date_default_timezone_set('Australia/Melbourne');
 	
+	//all the good stuff
 	require_once 'functions.php';
+	
 	//here we go
 	
 	//config
 	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
 //	$mainurl = 'http://tf-insights.localhost/api/v1/';
 	
-//var_dump($mainurl.'items?itemid=4609270&date='.strtotime("Sunday this week"));
+	//our themes that we want displayed
+	$ouritems = array(
+		'senna' => array (
+			'id' => '4609270',
+			'name' => 'Senna',
+		),
+		'fuse' => array (
+			'id' => '5136837',
+			'name' => 'Fuse',
+		),
+		'cityhub' => array (
+			'id' => '5425258',
+			'name' => 'CityHub',
+		),
+		'bliv' => array (
+			'id' => '4141443',
+			'name' => 'B:Liv',
+		),
+		'salient' => array (
+			'id' => '4363266',
+			'name' => 'Salient',
+		),
+	);
 	
 	//all time stats
 	// get all the entries info
@@ -61,30 +85,6 @@
 	
 	$lastweek = array();
 	$last_week_range = x_week_range("Tuesday last week");
-	
-	//our themes that we want displayed
-	$ouritems = array(
-			'senna' => array (
-				'id' => '4609270',
-				'name' => 'Senna',
-			),
-			'fuse' => array (
-				'id' => '5136837',
-				'name' => 'Fuse',
-			),
-			'cityhub' => array (
-				'id' => '5425258',
-				'name' => 'CityHub',
-			),
-			'bliv' => array (
-				'id' => '4141443',
-				'name' => 'B:Liv',
-			),
-			'salient' => array (
-				'id' => '4363266',
-				'name' => 'Salient',
-			),
-		);
 	
 	//set this week's statistics
 	if (date('w', time()) == 0) { //today is Sunday(first week day) so no data yet
