@@ -151,6 +151,10 @@
 		global $mainurl;
 		$uniqueid = uniqid();
 		$itemsales = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&period='.($days));
+		//if we got fewer results adjust
+		if (count($itemsales)-1 < $days) {
+			$days = count($itemsales)-1;
+		}
 		//var_dump($itemsales);
 		?>
 		<div id="<?= $uniqueid ?>" style="height:200px"></div>
