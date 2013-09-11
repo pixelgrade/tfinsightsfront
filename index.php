@@ -150,31 +150,22 @@
 	function sales_graph($itemID, $days) {
 		global $mainurl;
 		$uniqueid = uniqid();
-		$startdate = strtotime('-'.$days.' day');
-		$startstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.strtotime('-1 day',$startdate));
-		
+		$itemsales = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&period='.($days+1));
+		var_dump($itemsales);
 		?>
 		<div id="<?= $uniqueid ?>" style="height:200px"></div>
 		<script type="text/javascript">
 			jQuery( document ).ready(function() {
   			// Use Morris.Area instead of Morris.Line
 			// Docs: http://www.oesmith.co.uk/morris.js/lines.html
-				var sales_data_<?= $uniqueid ?> = [
+			var sales_data_<?= $uniqueid ?> = [
 		<?php
-			for ($x = 0; $x < $days; $x++) {
-				//grab the sales for that day
-				$currentdate = strtotime('+'.$x.' day',$startdate);
-			
-				$tempstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.$currentdate);
-				
-				$str = '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.($tempstats['sales'] - $startstats['sales']).'}';
+			for ($x = 0; $x < $days; $x++) {				
+				$str = '{"day": "'.date('Y-m-d',$itemsales[$x+1]['timestamp']).'", "sales": '.($itemsales[$x+1]['sales'] - $itemsales[$x]['sales']).'}';
 				if ($x < $days-1) {
 					$str .= ',';
 				};
-				echo $str;
-				
-				$startstats = $tempstats;
-				
+				echo $str;				
 			} ?>
 				];
 				
