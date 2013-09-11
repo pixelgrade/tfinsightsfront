@@ -151,7 +151,7 @@
 		global $mainurl;
 		$uniqueid = uniqid();
 		$itemsales = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&period='.($days));
-		var_dump($itemsales);
+		//var_dump($itemsales);
 		?>
 		<div id="<?= $uniqueid ?>" style="height:200px"></div>
 		<script type="text/javascript">
@@ -161,7 +161,7 @@
 			var sales_data_<?= $uniqueid ?> = [
 		<?php
 			for ($x = 0; $x < $days; $x++) {				
-				$str = '{"day": "'.date('Y-m-d',$itemsales[$x+1]['timestamp']).'", "sales": '.($itemsales[$x+1]['sales'] - $itemsales[$x]['sales']).'}';
+				$str = '{"day": "'.date('Y-m-d',strtotime($itemsales[$x+1]['timestamp'])).'", "sales": '.($itemsales[$x+1]['sales'] - $itemsales[$x]['sales']).'}';
 				if ($x < $days-1) {
 					$str .= ',';
 				};
