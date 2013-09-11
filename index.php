@@ -151,7 +151,7 @@
 		global $mainurl;
 		$uniqueid = uniqid();
 		$itemsales = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&period='.($days));
-		//if we got fewer results adjust
+		//if we got fewer results, adjust
 		if (count($itemsales)-1 < $days) {
 			$days = count($itemsales)-1;
 		}
@@ -772,7 +772,6 @@ body {
   	<div class="span6">
   	<h4><i>StartUP</i> Sales (last 30 days) </h4>
   		<?php sales_graph(5445413, 30); ?>
-  	</div>
   	</div>
   </div>
 	   <hr>
