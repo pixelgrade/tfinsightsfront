@@ -231,6 +231,10 @@
 				'id' => '4141443',
 				'name' => 'B:Liv',
 			),
+			'salient' => array (
+				'id' => '4363266',
+				'name' => 'Salient',
+			),
 		);
 	
 	//set this week's statistics
