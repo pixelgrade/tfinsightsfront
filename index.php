@@ -398,6 +398,7 @@ body {
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="ico/favicon.png">
+	<script src="js/jquery-2.0.3.min.js"></script> 
     </head>
 
     <body>
@@ -409,7 +410,7 @@ body {
     <h4 class="alert pull-right">TOP SECRET DOCUMENT</h4>
   </div>
       
-      Jumbotron
+      
       <div class="jumbotron">
        <p class="lead">&nbsp;</p>
     <h1>ThemeForest Insights</h1>
@@ -775,7 +776,6 @@ body {
 <!-- Le javascript
     ================================================== --> 
 <!-- Placed at the end of the document so the pages load faster --> 
-<script src="js/jquery-2.0.3.min.js"></script> 
 <script src="js/bootstrap-transition.js"></script> 
 <script src="js/bootstrap-alert.js"></script> 
 <script src="js/bootstrap-modal.js"></script> 
