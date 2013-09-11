@@ -775,7 +775,9 @@ body {
   		<?php sales_graph(4363266, 30); ?>
   	</div>
   	<div class="span6">
-  	
+  	<h4><i>StartUP</i> Sales (last 30 days) </h4>
+  		<?php sales_graph(5445413, 30); ?>
+  	</div>
   	</div>
   </div>
 	   <hr>
