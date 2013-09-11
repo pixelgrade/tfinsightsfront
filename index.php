@@ -185,6 +185,7 @@
 				  parseTime: false,
 				});
 			});
+			</script>
 		<?php
 		
 	}
