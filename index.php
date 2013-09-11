@@ -151,6 +151,7 @@
 		global $mainurl;
 		$uniqueid = uniqid();
 		$startdate = strtotime('-'.$days.' day');
+		$startstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.strtotime('-1 day',$startdate));
 		
 		?>
 		<div id="<?= $uniqueid ?>" style="height:200px"></div>
@@ -166,11 +167,14 @@
 			
 				$tempstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.$currentdate);
 				
-				$str = '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.$tempstats['sales'].'}';
+				$str = '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.$tempstats['sales'] - $startstats['sales'].'}';
 				if ($x < $days-1) {
 					$str .= ',';
 				};
 				echo $str;
+				
+				$startstats = $tempstats;
+				
 			} ?>
 				];
 				
