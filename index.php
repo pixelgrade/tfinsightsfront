@@ -167,7 +167,7 @@
 				$tempstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.$currentdate);
 				
 				$str = '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.$tempstats['sales'].'}';
-				if ($x < $days) {
+				if ($x < $days-1) {
 					$str .= ',';
 				};
 				echo $str;
