@@ -162,7 +162,11 @@
 				//grab the sales for that day
 				$currentdate = strtotime('+'.$x.' day',$startdate);
 				$tempstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.$currentdate);
-				echo '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.$tempstats['sales'].'},';
+				$str = '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.$tempstats['sales'].'}';
+				if ($x != $days) {
+					$str .= ',';
+				};
+				echo $str;
 			} ?>
 				];
 				
