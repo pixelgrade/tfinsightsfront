@@ -147,6 +147,40 @@
 		return $income;
 	}
 	
+	function sales_graph($itemID, $days) {
+		$uniqueid = uniqid();
+		$startdate = strtotime('-'.$days.' day');
+		?>
+		<div id="<?= $uniqueid ?>" style="height:200px"></div>
+		<script type="text/javascript">
+			$( document ).ready(function() {
+  			// Use Morris.Area instead of Morris.Line
+			// Docs: http://www.oesmith.co.uk/morris.js/lines.html
+				var sales_data_<?= $uniqueid ?> = [
+		<?php
+			for ($x = 0; $x < $days; $x++) {
+				//grab the sales for that day
+				$currentdate = strtotime('+'.$x.' day',$startdate);
+				$tempstats = grab_data_from_url($mainurl.'items?itemid='.$itemID.'&date='.$currentdate);
+				echo '{"day": "'.date('Y-m-d',$currentdate).'", "sales": '.$tempstats['sales'].'},';
+			} ?>
+				];
+				
+				Morris.Area({
+				  element: '<?= $uniqueid ?>',
+				  behaveLikeLine: true,
+				  data: sales_data_<?= $uniqueid ?>,
+				  xkey: 'day',
+				  xLabels: 'day',
+				  labels: ['Sales'],
+				  ykeys: ['sales'],
+				  parseTime: false,
+				});
+			});
+		<?php
+		
+	}
+	
 	//to get the start and end dates of a week with a given date
 	function x_week_range($date) {
 		$ts = strtotime($date);
@@ -713,11 +747,11 @@ body {
   <div class="row-fluid">
   	<div class="span6">
   	<h4><i>Senna</i> Sales (last 30 days) </h4>
-  		<div id="graph_1" style="height:200px"></div>
+  		<?php sales_graph(4609270, 30); ?>
   	</div>
   	<div class="span6">
   	<h4><i>Fuse</i> Sales (last 30 days) </h4>
-  		<div id="graph_2" style="height:200px"></div>
+  		<<?php sales_graph(5136837, 30); ?>
   	</div>
   </div>
   
@@ -747,58 +781,6 @@ body {
 
 <script src="js/charts/raphael.min.js"></script>
 <script src="js/charts/morris.min.js"></script>
-<script type="text/javascript">
-  			// Use Morris.Area instead of Morris.Line
-				// Docs: http://www.oesmith.co.uk/morris.js/lines.html
-
-				var sales_data_1 = [
-				  {"day": "2012-09-01", "sales": 07},
-			    {"day": "2012-09-02", "sales": 51},
-			    {"day": "2012-09-03", "sales": 69},
-			    {"day": "2012-09-04", "sales": 46},
-			    {"day": "2012-09-05", "sales": 57},
-			    {"day": "2012-09-06", "sales": 48},
-			    {"day": "2012-09-07", "sales": 71},
-			    {"day": "2012-09-08", "sales": 71},
-			    {"day": "2012-09-09", "sales": 01},
-			    {"day": "2012-09-10", "sales": 15}
-				];
-
-				Morris.Area({
-				  element: 'graph_1',
-				  behaveLikeLine: true,
-				  data: sales_data_1,
-				  xkey: 'day',
-				  xLabels: 'day',
-				  labels: ['Sales'],
-				  ykeys: ['sales'],
-				  parseTime: false,
-				});
-
-				var sales_data_2 = [
-				  {"day": "2012-09-01", "sales": 07},
-			    {"day": "2012-09-02", "sales": 51},
-			    {"day": "2012-09-03", "sales": 69},
-			    {"day": "2012-09-04", "sales": 46},
-			    {"day": "2012-09-05", "sales": 57},
-			    {"day": "2012-09-06", "sales": 48},
-			    {"day": "2012-09-07", "sales": 71},
-			    {"day": "2012-09-08", "sales": 71},
-			    {"day": "2012-09-09", "sales": 30},
-			    {"day": "2012-09-10", "sales": 15}
-				];
-
-				Morris.Bar({
-				  element: 'graph_2',
-				  behaveLikeLine: true,
-				  data: sales_data_1,
-				  xkey: 'day',
-				  xLabels: 'day',
-				  labels: ['Sales'],
-				  ykeys: ['sales'],
-				  parseTime: false,
-				});
-  		</script>
 
 </body>
 </html>
