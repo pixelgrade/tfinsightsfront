@@ -62,7 +62,7 @@
 	
 	//last 30 days stats
 	$themes_accepted_30days = grab_data_from_url($mainurl.'items?accepted=30&all');
-	var_dump($themes_accepted_30days);
+	
 	$total_sales_30days = mysum($themes_accepted_30days,'category_name','','sales');
 	$total_themes_30days = count($themes_accepted_30days);
 	$total_income_30days = myincome($themes_accepted_30days,'category_name','');
@@ -110,6 +110,9 @@
 		$lastweek[$key] -= $tempstats['sales'];
 	}
 	
+	//items sales 30 days ago
+	$items_sales_30daysago = grab_data_from_url($mainurl.'items?salesonly=on&date='.strtotime('-30 days'));
+	var_dump($items_sales_30daysago);
 	//stats for tags
 	
 ?>
