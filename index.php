@@ -521,6 +521,7 @@ body {
  <?php endforeach;
 	endif;
 	?>
+ <!--
 	<div class="row-fluid">
 	
 		<div class="span4">
@@ -560,7 +561,7 @@ body {
 		</div>
   </div>
   <hr>
-  
+  -->
   <!-- Graphs -->
   <div class="row-fluid">
   	<div class="span6">
