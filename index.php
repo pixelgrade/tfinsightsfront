@@ -111,8 +111,8 @@
 	}
 	
 	//items sales 30 days ago
-	$items_sales_30daysago = grab_data_from_url($mainurl.'items?salesonly=on&date='.strtotime('-30 days'));
-	var_dump($items_sales_30daysago);
+	//$items_sales_30daysago = grab_data_from_url($mainurl.'items?salesonly=on&date='.strtotime('-30 days'));
+	//var_dump($items_sales_30daysago);
 	//stats for tags
 	
 ?>
