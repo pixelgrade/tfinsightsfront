@@ -1,15 +1,15 @@
 <?php
 	date_default_timezone_set('Australia/Melbourne');
-	
+
 	//all the good stuff
 	require_once 'functions.php';
-	
+
 	//here we go
-	
+
 	//config
 	$mainurl = 'http://cgwizz.com/tf-insights/api/v1/';
 //	$mainurl = 'http://tf-insights.localhost/api/v1/';
-	
+
 	//our themes that we want displayed
 	$ouritems = array(
 		'senna' => array (
@@ -33,20 +33,20 @@
 			'name' => 'Salient',
 		),
 	);
-	
+
 	//all time stats
 	// get all the entries info
 	$entries = grab_data_from_url($mainurl.'items?all');
-	
+
 	//get all authors
 	$authors = grab_data_from_url($mainurl.'authors?all');
 	// var_dump($authors[0]);
 	$total_authors = count($authors);
 	$total_authors_sales = mysum($authors,'level','','sales');
-	
+
 	$totals = grab_data_from_url($mainurl.'items?totals');
 //	 var_dump($totals);
-	
+
 	//grab items by price
 	$totals_35 = grab_data_from_url($mainurl.'items?totals&cost=35');
 	$totals_40 = grab_data_from_url($mainurl.'items?totals&cost=40');
@@ -54,19 +54,19 @@
 	$totals_50 = grab_data_from_url($mainurl.'items?totals&cost=50');
 	$totals_55 = grab_data_from_url($mainurl.'items?totals&cost=55');
 	$totals_60 = grab_data_from_url($mainurl.'items?totals&cost=60');
-	
+
 	//determine the day of the week with most accepted themes
 	$common_acceptance_day = grab_data_from_url($mainurl.'items?common_acceptance_day');
 	//we use mysql WEEKDAY() to get the day so its 0=Monday..6=Sunday numbered
 	$dowMap = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-	
+
 	//last 30 days stats
 	$themes_accepted_30days = grab_data_from_url($mainurl.'items?accepted=30&all');
-	
+
 	$total_sales_30days = mysum($themes_accepted_30days,'category_name','','sales');
 	$total_themes_30days = count($themes_accepted_30days);
 	$total_income_30days = myincome($themes_accepted_30days,'category_name','');
-	
+
 	//get all authors
 	$authors_1monthago = grab_data_from_url($mainurl.'authors?all&date='.strtotime("-1 month"));
 	$authors_now = $authors;
@@ -79,27 +79,27 @@
 	$total_authors_now = count($authors_now);
 	$total_authors_1monthago = count($authors_1monthago);
 	$total_authors_sales_lastmonth = mysum($authors_now,'level','','sales') - mysum($authors_1monthago,'level','','sales');
-	
+
 	$thisweek = array(); //store the data bot our themes for this week
 	$this_week_range = x_week_range(date("Y-m-d H:i:s"));
-	
+
 	$lastweek = array();
 	$last_week_range = x_week_range("Tuesday last week");
-	
+
 	//set this week's statistics
 	if (date('w', time()) == 0) { //today is Sunday(first week day) so no data yet
-		
+
 	} else {
 		foreach ($ouritems as $key => $item) {
 			//grab the sales prior to the start of this week
 			$tempstats = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime('-1 day',strtotime($this_week_range[0])));
-			
+
 			//substract them from the sales to the day
 			$thisweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id'])['sales'];
 			$thisweek[$key] -= $tempstats['sales'];
 		}
 	}
-	
+
 	//set last weeks statistics
 	foreach ($ouritems as $key => $item) {
 		//grab the sales prior to the start of last week
@@ -109,12 +109,12 @@
 		$lastweek[$key] = grab_data_from_url($mainurl.'items?itemid='.$item['id'].'&date='.strtotime($last_week_range[1]))['sales'];
 		$lastweek[$key] -= $tempstats['sales'];
 	}
-	
+
 	//items sales 30 days ago
 	//$items_sales_30daysago = grab_data_from_url($mainurl.'items?salesonly=on&date='.strtotime('-30 days'));
 	//var_dump($items_sales_30daysago);
 	//stats for tags
-	
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -207,7 +207,7 @@ body {
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="ico/favicon.png">
-	<script src="js/jquery-2.0.3.min.js"></script> 
+	<script src="js/jquery-2.0.3.min.js"></script>
     </head>
 
     <body>
@@ -218,15 +218,15 @@ body {
     </h4>
     <h4 class="alert pull-right">TOP SECRET DOCUMENT</h4>
   </div>
-      
-      
+
+
       <div class="jumbotron">
        <p class="lead">&nbsp;</p>
     <h1>ThemeForest Insights</h1>
 	<p class="text-center">The current date and time: <?php echo date("D M d, Y G:i a"); ?> (Envato time - Australia/Melbourne)</p>
   </div>
       <hr>
-      
+
       <h2 class="well">All time Stats</h2>
   <div class="row-fluid">
     <div class="span2">
@@ -295,7 +295,7 @@ body {
 		<strong>Regular Authors</strong><small> <span class="label"><?php echo round(mysum($authors,'level','Regular', 'sales', true) / mycount($authors,'level','Regular', true)) ?></span></small>
 		<div class="progress">
 			<div class="bar  bar-warning" style="width: <?php echo round(mysum($authors,'level','Regular', 'sales', true) / $total_authors_sales * 100) ?>%;"><?php echo mysum($authors,'level','Regular', 'sales', true) ?></div>
-		</div>  
+		</div>
 	</div>
         <div class="span4">
 		<h2>Authors Income</h2>
@@ -311,7 +311,7 @@ body {
 		<div class="progress">
 			<div class="bar  bar-success" style="width: <?php echo round(mysum($authors,'level','Regular', 'income', true) / mysum($authors,'level','', 'income') * 100) ?>%;"> $<?php echo round(mysum($authors,'level','Regular', 'income', true) * 0.6) ?></div>
 		</div>
-          
+
         </div>
   </div>
       <h2 class="well">Last 30 Days Stats <small>(<?php echo date('F dS', strtotime("-1 month")); ?> - <?php echo date('F dS'); ?>)</small></h2>
@@ -493,7 +493,7 @@ body {
 		<div class="alert alert-info pagination-centered"><strong><?php echo $percent ?>%</strong> - <strong><?php echo $sales ?></strong> s. (<?php echo $sales_avg ?> av) -<strong> $<?php echo $income_avg ?></strong> av</div>
 		<p><strong><?php echo $percent ?>% </strong>of themes added last 30 days are using a <strong>page/layout Builder</strong> with<strong> <?php echo $sales ?> sales (<?php echo $sales_avg ?> avg)</strong>and <strong>$<?php echo $income_avg ?></strong> income (avg) with 60% rate.</p>
 	</div>
-        
+
   </div>
    <hr>
    <h2 class="well">Theme Specific Stats</h2>
@@ -521,47 +521,29 @@ body {
  <?php endforeach;
 	endif;
 	?>
- <!--
-	<div class="row-fluid">
-	
-		<div class="span4">
-		  <h4>Best Selling Themes (last 30 days): </h4>
-		  <ol>
-		  	<li>Senna - 240 Sales</li>
-		  	<li>Fuse - 192 Sales</li>
-		  	<li>CityHub - 150 Sales</li>
-		  	<li>Senna - 240 Sales</li>
-		  	<li>Fuse - 192 Sales</li>
-		  	<li>CityHub - 150 Sales</li>
-		  </ol>
-		</div>
-		
-		<div class="span4">
-		  <h4>Best Selling <i>Category</i> Themes: </h4>
-		  <ol>
-		  	<li>Senna - 240 Sales</li>
-		  	<li>Fuse - 192 Sales</li>
-		  	<li>CityHub - 150 Sales</li>
-		  	<li>Senna - 240 Sales</li>
-		  	<li>Fuse - 192 Sales</li>
-		  	<li>CityHub - 150 Sales</li>
-		  </ol>
-		</div>
-		
-		<div class="span4">
-		  <h4>Best Selling <i>Tag</i> Themes: </h4>
-		  <ol>
-		  	<li>Senna - 240 Sales</li>
-		  	<li>Fuse - 192 Sales</li>
-		  	<li>CityHub - 150 Sales</li>
-		  	<li>Senna - 240 Sales</li>
-		  	<li>Fuse - 192 Sales</li>
-		  	<li>CityHub - 150 Sales</li>
-		  </ol>
-		</div>
-  </div>
-  <hr>
-  -->
+
+<? foreach (array(60, 30, 15) as $days): ?>
+	<? $categories = all_categories() ?>
+	<? if ( ! empty($categories)): ?>
+		<? foreach ($categories as $category): ?>
+			<h3>Best sellers in last <?= $days ?></h3>
+			<div class="row-fluid">
+				<div class="span4">
+					<h4><?= $category['title'] ?></h4>
+					<ol>
+						<? foreach (best_sellers_for_category($category['id'], $days) as $item): ?>
+							<li><?= $item['title'] ?> - <?= $item['sales'] ?> sales</li>
+						<? endforeach; ?>
+					</ol>
+				</div>
+			</div>
+		<? endforeach; ?>
+	<? else: # no categories ?>
+		<p>There are currently no categories available.</p>
+	<? endif; ?>
+<? endforeach; ?>
+<hr>
+
   <!-- Graphs -->
   <div class="row-fluid">
   	<div class="span6">
@@ -573,7 +555,7 @@ body {
   		<?php sales_graph(5136837, 30); ?>
   	</div>
   </div>
-  
+
   <div class="row-fluid">
   	<div class="span6">
   	<h4><i>Salient</i> Sales (last 30 days) </h4>
@@ -589,21 +571,21 @@ body {
     <p>&copy; PixelGrade 2013</p>
   </div>
     </div>
-<!-- /container --> 
+<!-- /container -->
 
 <!-- Le javascript
-    ================================================== --> 
-<!-- Placed at the end of the document so the pages load faster --> 
-<script src="js/bootstrap-transition.js"></script> 
-<script src="js/bootstrap-alert.js"></script> 
-<script src="js/bootstrap-modal.js"></script> 
-<script src="js/bootstrap-dropdown.js"></script> 
-<script src="js/bootstrap-scrollspy.js"></script> 
-<script src="js/bootstrap-tab.js"></script> 
-<script src="js/bootstrap-tooltip.js"></script> 
-<script src="js/bootstrap-popover.js"></script> 
-<script src="js/bootstrap-button.js"></script> 
-<script src="js/bootstrap-collapse.js"></script> 
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/bootstrap-transition.js"></script>
+<script src="js/bootstrap-alert.js"></script>
+<script src="js/bootstrap-modal.js"></script>
+<script src="js/bootstrap-dropdown.js"></script>
+<script src="js/bootstrap-scrollspy.js"></script>
+<script src="js/bootstrap-tab.js"></script>
+<script src="js/bootstrap-tooltip.js"></script>
+<script src="js/bootstrap-popover.js"></script>
+<script src="js/bootstrap-button.js"></script>
+<script src="js/bootstrap-collapse.js"></script>
 <script src="js/bootstrap-carousel.js"></script>
 
 <script src="js/charts/raphael.min.js"></script>

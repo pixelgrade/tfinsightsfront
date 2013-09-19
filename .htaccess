@@ -1,3 +1,6 @@
+# Enable short_open_tag
+php_flag short_open_tag On 
+
 #------------------------------------------------------------------------------
 # Vhosts Server root folder. File .htaccess
 # This file provides server security limiting access to the localhost only.
@@ -23,7 +26,7 @@ Options +ExecCGI +FollowSymLinks
 # AuthUserFile: ../../../htpasswd Corresponds to folder UniServer\htpasswd
 #               In folder UniServer\htpasswd create a new folder e.g Vhost_1
 #               In this new folder create a new file named .htpasswd
-#               Edit this file and add a name and passwrd for example 
+#               Edit this file and add a name and passwrd for example
 #               name123:password45
 #               Path will look like this (replace xxx with your new folder):
 #               ../../../htpasswd/Vhost_1/.htpasswd
