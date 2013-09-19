@@ -523,10 +523,10 @@ body {
 	?>
 
 <? foreach (array(60, 30, 15) as $days): ?>
+	<h3>Best sellers in the last <?= $days ?> days</h3>
 	<? $categories = all_categories() ?>
 	<? if ( ! empty($categories)): ?>
 		<? foreach ($categories as $category): ?>
-			<h3>Best sellers in last <?= $days ?></h3>
 			<div class="row-fluid">
 				<div class="span4">
 					<h4><?= $category['title'] ?></h4>
