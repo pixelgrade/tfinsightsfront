@@ -187,7 +187,7 @@
 
 	function best_sellers_for_category($category, $days) {
 		global $mainurl;
-		return grab_data_from_url($mainurl.'items?category='.$category.'&dayspast='.$days);
+		return grab_data_from_url($mainurl.'items?category='.$category.'&dayspast='.$days.'&limit=5');
 	}
 
 	function all_categories() {

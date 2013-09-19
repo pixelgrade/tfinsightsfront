@@ -522,12 +522,19 @@ body {
 	endif;
 	?>
 
-<? foreach (array(60, 30, 15) as $days): ?>
+<? foreach (array(30) as $days): ?>
 	<h3>Best sellers in the last <?= $days ?> days</h3>
 	<? $categories = all_categories() ?>
 	<? if ( ! empty($categories)): ?>
-		<? foreach ($categories as $category): ?>
-			<div class="row-fluid">
+		<div class="row-fluid">
+			<? $counter = 0; ?>
+			<? foreach ($categories as $category): ?>
+				<? if ($counter == 3): ?>
+					</div><div class="row-fluid">
+					<? $counter = 1; ?>
+				<? else: # coutner < 4 ?>
+					<? $counter++ ?>
+				<? endif; ?>
 				<div class="span4">
 					<h4><?= $category['title'] ?></h4>
 					<ol>
@@ -536,8 +543,10 @@ body {
 						<? endforeach; ?>
 					</ol>
 				</div>
-			</div>
-		<? endforeach; ?>
+			<? endforeach; ?>
+
+
+		</div>
 	<? else: # no categories ?>
 		<p>There are currently no categories available.</p>
 	<? endif; ?>
